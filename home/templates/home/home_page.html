@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+<!--Arya: Wagtail provides a number of template tags & filters which can be loaded by including 
+{% load wagtailcore_tags %} at the top of your template file.-->
+
+<!--Arya: Note: You’ll need to include {% load wagtailcore_tags %} in each template that uses Wagtail’s tags. 
+    Django will throw a TemplateSyntaxError if the tags aren’t loaded.-->
+
+
+{% load wagtailcore_tags %}
+
+{% load static %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+
+{% comment %}
+Delete the line below if you're just getting started and want to remove the welcome screen!
+{% endcomment %}
+<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
+{% endblock extra_css %}
+
+<!--we use the richtext filter to escape 
+    and print the contents of a RichTextField:-->
+{% block content %}
+    {{ page.body|richtext }}
+{% endblock %}

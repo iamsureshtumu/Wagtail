@@ -1,0 +1,35 @@
+<!--Arya: Since the model is called BlogIndexPage, the default 
+    template name (unless we override it) will be blog/templates/blog/blog_index_page.html.-->
+ <!--Arya:   Note the pageurl tag, 
+    which is similar to Django’s url tag but takes a Wagtail Page object as an argument.
+  -->
+  <!--Arya: The get_children() method gets us a list of instances of the Page base class-->
+<!--Arya: When we want to reference properties of the instances that inherit from the base class, Wagtail provides the specific method that retrieves the actual BlogPage record-->
+<!--Arya: While the “title” field is present on the base Page model, “intro” is only present on the BlogPage model, so we need .specific to access it.-->
+
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogindexpage{% endblock %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    <div class="intro">{{ page.intro|richtext }}</div>
+
+    {% for post in blogpages %}
+        {% with post=post.specific %}
+            <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+
+            {% with post.main_image as main_image %}
+                {% if main_image %}{% image main_image fill-160x100 %}{% endif %}
+            {% endwith %}
+
+            <p>{{ post.intro }}</p>
+            {{ post.body|richtext }}
+        {% endwith %}
+    {% endfor %}
+
+{% endblock %}
